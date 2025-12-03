@@ -16,6 +16,9 @@ import EasterEgg from '@/components/EasterEgg';
 import Tooltip from '@/components/Tooltip';
 import PDFExport from '@/components/PDFExport';
 import SocialShare from '@/components/SocialShare';
+import Badges from '@/components/Badges';
+import ComparisonRadar from '@/components/ComparisonRadar';
+import RoadmapProgress from '@/components/RoadmapProgress';
 
 export default function ResultatPage() {
   const searchParams = useSearchParams();
@@ -343,56 +346,29 @@ export default function ResultatPage() {
           </div>
         </FadeInSection>
 
-        {/* Roadmap */}
-        <FadeInSection delay={0.6} className="mb-8">
-          <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 md:p-8 hover:shadow-2xl transition-shadow duration-300">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-6">
-              🗺️ Roadmap de Migration
-            </h2>
+        {/* Badges Gamification */}
+        {questionnaireData && results && (
+          <FadeInSection delay={0.6} className="mb-8">
+            <Badges data={questionnaireData} results={results} />
+          </FadeInSection>
+        )}
 
-            <div className="space-y-6">
-              {roadmap.map((step, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: -50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1, duration: 0.5 }}
-                  viewport={{ once: true }}
-                  className="border-l-4 border-blue-600 pl-6 pb-6 last:pb-0 hover:border-blue-700 transition-colors"
-                >
-                  <div className="flex flex-col md:flex-row md:items-center gap-3 mb-2">
-                    <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-full flex items-center justify-center font-bold text-lg shadow-lg">
-                      {step.phase}
-                    </div>
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                      {step.title}
-                    </h3>
-                    <span className="md:ml-auto text-sm px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full font-medium">
-                      {step.duration}
-                    </span>
-                  </div>
-                  <p className="text-gray-600 dark:text-gray-300 mb-3">{step.description}</p>
-                  <ul className="space-y-1">
-                    {step.actions.map((action, actionIndex) => (
-                      <li
-                        key={actionIndex}
-                        className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2"
-                      >
-                        <span className="text-green-600 mt-0.5">✓</span>
-                        <span>{action}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </motion.div>
-              ))}
-            </div>
-          </div>
+        {/* Comparison Radar */}
+        {questionnaireData && results && (
+          <FadeInSection delay={0.65} className="mb-8">
+            <ComparisonRadar data={questionnaireData} results={results} />
+          </FadeInSection>
+        )}
+
+        {/* Roadmap with Progress */}
+        <FadeInSection delay={0.7} className="mb-8">
+          <RoadmapProgress roadmap={roadmap} />
         </FadeInSection>
 
         {/* PDF Export & Social Share */}
         {questionnaireData && results && (
           <>
-            <FadeInSection delay={0.7} className="mb-8">
+            <FadeInSection delay={0.75} className="mb-8">
               <SocialShare data={questionnaireData} results={results} />
             </FadeInSection>
 
@@ -403,7 +379,7 @@ export default function ResultatPage() {
         )}
 
         {/* CTA */}
-        <FadeInSection delay={0.9} className="text-center">
+        <FadeInSection delay={0.85} className="text-center">
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Link
               href="/"
