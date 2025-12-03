@@ -1,11 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import IntroScene from '@/components/IntroScene';
 import CharacterDialogue, { characters } from '@/components/CharacterDialogue';
 import { ArrowRight, Sparkles } from 'lucide-react';
+import Confetti from '@/components/Confetti';
+import { useSound } from '@/hooks/useSound';
 
 type QuestionnaireData = {
   nbPCs: number;
@@ -762,6 +764,37 @@ function EpilogueScene({
   data: QuestionnaireData;
 }) {
   const [currentEpScene, setCurrentEpScene] = useState(0);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [soundEnabled] = useState(true);
+  const { playSuccessSound } = useSound();
+
+  // Calculer les économies approximatives
+  const approximateSavings = (data.windowsLicenses * 150) + (data.officeLicenses * 100) - 2000;
+
+  // Easter eggs conditionnels
+  const getEasterEgg = () => {
+    if (data.nbPCs > 200) {
+      return {
+        message: "Wow, une TRÈS grande école ! Vous allez sauver une fortune ! 🏛️💰",
+        show: true,
+      };
+    }
+    if (approximateSavings > 20000) {
+      return {
+        message: `Incroyable ! Plus de ${Math.round(approximateSavings / 1000)}k€ d'économies ! 🎊`,
+        show: true,
+      };
+    }
+    if (data.pcAge > 6) {
+      return {
+        message: "Vos PC sont de vrais survivants ! Linux va les faire renaître ! 🦸‍♂️",
+        show: true,
+      };
+    }
+    return { message: "", show: false };
+  };
+
+  const easterEgg = getEasterEgg();
 
   const epilogueScenes = [
     {
@@ -780,21 +813,40 @@ function EpilogueScene({
       emoji: '💰',
       title: 'Les économies arrivent',
       character: characters.comptable,
-      dialogue: "Incroyable ! On a économisé des milliers d'euros dès le premier mois !",
+      dialogue: easterEgg.show && approximateSavings > 20000
+        ? `On a économisé plus de ${Math.round(approximateSavings / 1000)}k€ dès le premier mois ! C'est fou !`
+        : "Incroyable ! On a économisé des milliers d'euros dès le premier mois !",
     },
     {
       emoji: '🌍',
       title: 'Un impact écologique',
       character: characters.eleveGeek,
-      dialogue: "On a sauvé 30 vieux ordinateurs ! Plus besoin de les jeter, Linux les fait revivre !",
+      dialogue: data.pcAge > 6
+        ? `On a sauvé ${data.nbPCs} vieux ordinateurs ! Ces ancêtres technologiques revivent grâce à Linux !`
+        : `On a sauvé ${Math.min(data.nbPCs, 30)} ordinateurs ! Plus besoin de les jeter, Linux les fait revivre !`,
     },
     {
       emoji: '🏆',
       title: 'Une école exemplaire',
       character: characters.narrator,
-      dialogue: "Votre école est devenue un modèle NIRD dans toute la région !",
+      dialogue: data.nbPCs > 200
+        ? "Votre GRANDE école est devenue un modèle NIRD dans TOUTE la France ! 🇫🇷"
+        : "Votre école est devenue un modèle NIRD dans toute la région !",
     },
   ];
+
+  useEffect(() => {
+    // Show confetti on economic scene or final scene
+    if (currentEpScene === 2 && approximateSavings > 20000) {
+      setShowConfetti(true);
+      playSuccessSound(soundEnabled);
+      setTimeout(() => setShowConfetti(false), 5000);
+    }
+    if (currentEpScene === 4) {
+      setShowConfetti(true);
+      playSuccessSound(soundEnabled);
+    }
+  }, [currentEpScene, approximateSavings, soundEnabled, playSuccessSound]);
 
   const handleNext = () => {
     if (currentEpScene < epilogueScenes.length - 1) {
@@ -810,15 +862,20 @@ function EpilogueScene({
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="fixed inset-0 z-50 bg-gradient-to-br from-green-700 via-blue-700 to-purple-700 flex items-center justify-center"
+      className="fixed inset-0 z-50 bg-gradient-to-br from-green-700 via-blue-700 to-purple-700 flex items-center justify-center overflow-hidden"
     >
+      {/* Confetti */}
+      {showConfetti && <Confetti count={60} duration={4} />}
+
       {/* Skip button */}
       <motion.button
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}
         onClick={onComplete}
-        className="absolute top-4 right-4 px-4 py-2 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white rounded-full text-sm transition-colors"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className="absolute top-3 md:top-4 right-3 md:right-4 px-3 md:px-4 py-2 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white rounded-full text-xs md:text-sm transition-colors z-10"
       >
         Voir les résultats →
       </motion.button>
@@ -835,10 +892,15 @@ function EpilogueScene({
           >
             {/* Emoji */}
             <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.3, type: 'spring', stiffness: 200 }}
-              className="text-9xl mb-6"
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{
+                delay: 0.3,
+                type: 'spring',
+                stiffness: 200,
+                damping: 15,
+              }}
+              className="text-6xl md:text-9xl mb-4 md:mb-6"
             >
               {scene.emoji}
             </motion.div>
@@ -848,7 +910,7 @@ function EpilogueScene({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
-              className="text-5xl md:text-6xl font-bold text-white mb-8"
+              className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6 md:mb-8 px-2"
             >
               {scene.title}
             </motion.h1>
@@ -858,35 +920,52 @@ function EpilogueScene({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7 }}
-              className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-2xl max-w-2xl mx-auto mb-8"
+              className="bg-white dark:bg-gray-800 rounded-3xl p-4 md:p-8 shadow-2xl max-w-2xl mx-auto mb-6 md:mb-8"
             >
-              <div className="flex items-center gap-4 mb-4">
-                <div className={`w-16 h-16 bg-gradient-to-br ${scene.character.color} rounded-full flex items-center justify-center text-4xl`}>
+              <div className="flex items-center gap-3 md:gap-4">
+                <motion.div
+                  animate={{ scale: [1, 1.1, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className={`w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br ${scene.character.color} rounded-full flex items-center justify-center text-3xl md:text-4xl flex-shrink-0`}
+                >
                   {scene.character.emoji}
-                </div>
+                </motion.div>
                 <div className="text-left">
-                  <div className="text-sm font-semibold text-gray-600 dark:text-gray-400">
+                  <div className="text-xs md:text-sm font-semibold text-gray-600 dark:text-gray-400">
                     {scene.character.name}
                   </div>
-                  <div className="text-xl font-bold text-gray-900 dark:text-white">
+                  <div className="text-base md:text-xl font-bold text-gray-900 dark:text-white">
                     {scene.dialogue}
                   </div>
                 </div>
               </div>
             </motion.div>
 
+            {/* Easter egg message */}
+            {easterEgg.show && currentEpScene === 4 && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ delay: 1, type: 'spring', stiffness: 200 }}
+                className="mb-6 md:mb-8 bg-yellow-400 text-yellow-900 px-4 md:px-6 py-3 md:py-4 rounded-2xl font-bold text-sm md:text-lg shadow-2xl"
+              >
+                ✨ {easterEgg.message} ✨
+              </motion.div>
+            )}
+
             {/* Action button */}
             <motion.button
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.9 }}
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.05, boxShadow: '0 20px 60px rgba(255,255,255,0.4)' }}
               whileTap={{ scale: 0.95 }}
               onClick={handleNext}
-              className="px-8 py-4 bg-white text-gray-900 font-bold rounded-full text-lg shadow-2xl hover:shadow-3xl transition-all inline-flex items-center gap-2"
+              className="px-6 md:px-8 py-3 md:py-4 bg-white text-gray-900 font-bold rounded-full text-base md:text-lg shadow-2xl hover:shadow-3xl transition-all inline-flex items-center gap-2"
             >
               {currentEpScene < epilogueScenes.length - 1 ? 'Continuer' : 'Découvrir vos économies'}
-              <ArrowRight className="w-5 h-5" />
+              {currentEpScene === epilogueScenes.length - 1 && <Sparkles className="w-5 h-5" />}
+              {currentEpScene < epilogueScenes.length - 1 && <ArrowRight className="w-5 h-5" />}
             </motion.button>
           </motion.div>
         </AnimatePresence>
@@ -896,17 +975,20 @@ function EpilogueScene({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.1 }}
-          className="flex justify-center gap-2 mt-12"
+          className="flex justify-center gap-1.5 md:gap-2 mt-8 md:mt-12"
         >
           {epilogueScenes.map((_, index) => (
-            <div
+            <motion.div
               key={index}
-              className={`w-2 h-2 rounded-full transition-all ${
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 1.1 + index * 0.1 }}
+              className={`h-1.5 md:h-2 rounded-full transition-all duration-300 ${
                 index === currentEpScene
-                  ? 'bg-white w-8'
+                  ? 'bg-white w-6 md:w-8'
                   : index < currentEpScene
-                  ? 'bg-white/60'
-                  : 'bg-white/20'
+                  ? 'bg-white/60 w-1.5 md:w-2'
+                  : 'bg-white/20 w-1.5 md:w-2'
               }`}
             />
           ))}
@@ -914,8 +996,28 @@ function EpilogueScene({
       </div>
 
       {/* Cinematic bars */}
-      <div className="absolute top-0 left-0 right-0 h-16 bg-black" />
-      <div className="absolute bottom-0 left-0 right-0 h-16 bg-black" />
+      <div className="absolute top-0 left-0 right-0 h-12 md:h-16 bg-black" />
+      <div className="absolute bottom-0 left-0 right-0 h-12 md:h-16 bg-black" />
+
+      {/* Animated particles in background */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {Array.from({ length: 15 }).map((_, i) => (
+          <motion.div
+            key={i}
+            initial={{ y: -10, x: Math.random() * 100 + '%', opacity: 0 }}
+            animate={{
+              y: '110vh',
+              opacity: [0, 0.4, 0],
+            }}
+            transition={{
+              duration: Math.random() * 8 + 8,
+              repeat: Infinity,
+              delay: Math.random() * 5,
+            }}
+            className="absolute w-1 h-1 bg-white rounded-full"
+          />
+        ))}
+      </div>
     </motion.div>
   );
 }
