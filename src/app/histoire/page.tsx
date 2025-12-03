@@ -44,13 +44,18 @@ export default function StoryMode() {
   };
 
   const handleEpilogueComplete = () => {
-    // Navigate to results with data
+    // Convertir les données au format attendu par la page résultat
+    const questionnaireData = {
+      nbPCs: data.nbPCs,
+      hasWindows: data.windowsLicenses > 0,
+      hasOffice: data.officeLicenses > 0,
+      pcAge: data.pcAge,
+      currentMaintenanceCost: data.maintenanceCost,
+    };
+
+    // Navigate to results with data in JSON format
     const params = new URLSearchParams({
-      nbPCs: data.nbPCs.toString(),
-      windowsLicenses: data.windowsLicenses.toString(),
-      officeLicenses: data.officeLicenses.toString(),
-      pcAge: data.pcAge.toString(),
-      maintenanceCost: data.maintenanceCost.toString(),
+      data: JSON.stringify(questionnaireData),
     });
     router.push(`/resultat?${params.toString()}`);
   };
