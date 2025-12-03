@@ -14,6 +14,8 @@ import ComparisonChart from '@/components/ComparisonChart';
 import EcoVisualization from '@/components/EcoVisualization';
 import EasterEgg from '@/components/EasterEgg';
 import Tooltip from '@/components/Tooltip';
+import PDFExport from '@/components/PDFExport';
+import SocialShare from '@/components/SocialShare';
 
 export default function ResultatPage() {
   const searchParams = useSearchParams();
@@ -387,8 +389,21 @@ export default function ResultatPage() {
           </div>
         </FadeInSection>
 
+        {/* PDF Export & Social Share */}
+        {questionnaireData && results && (
+          <>
+            <FadeInSection delay={0.7} className="mb-8">
+              <SocialShare data={questionnaireData} results={results} />
+            </FadeInSection>
+
+            <FadeInSection delay={0.8} className="text-center mb-8">
+              <PDFExport data={questionnaireData} results={results} />
+            </FadeInSection>
+          </>
+        )}
+
         {/* CTA */}
-        <FadeInSection delay={0.7} className="text-center">
+        <FadeInSection delay={0.9} className="text-center">
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Link
               href="/"

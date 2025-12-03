@@ -1,9 +1,11 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 
 export const metadata: Metadata = {
-  title: 'Migration Linux - Calculateur d\'Impact',
-  description: 'Calculez les économies et l\'impact écologique d\'une migration vers Linux',
+  title: 'NIRD - Calculateur d\'Impact Migration Linux',
+  description: 'Calculez les économies et l\'impact écologique d\'une migration vers Linux avec NIRD',
 }
 
 export default function RootLayout({
@@ -13,7 +15,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr">
-      <body>{children}</body>
+      <body>
+        <Header />
+        <main className="min-h-screen">
+          {children}
+        </main>
+        <Footer />
+      </body>
     </html>
   )
 }
