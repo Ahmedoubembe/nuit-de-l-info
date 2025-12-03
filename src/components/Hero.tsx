@@ -116,29 +116,94 @@ export default function Hero() {
             ))}
           </motion.div>
 
-          {/* CTA Button */}
+          {/* Mode Selection */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
+            className="max-w-4xl mx-auto"
           >
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Link
-                href="/questionnaire"
-                className="inline-flex items-center gap-2 px-6 md:px-8 py-3 md:py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-full text-base md:text-lg shadow-xl hover:shadow-2xl transition-all duration-300 w-full md:w-auto justify-center"
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+              Choisissez votre mode
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Story Mode */}
+              <motion.div
+                whileHover={{ y: -8, scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="relative"
               >
-                Démarrer l'évaluation
-                <motion.div
-                  animate={{ x: [0, 5, 0] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
-                >
-                  <ArrowRight className="w-5 h-5" />
-                </motion.div>
-              </Link>
-            </motion.div>
+                <Link href="/histoire" className="block">
+                  <div className="bg-gradient-to-br from-purple-500 via-pink-500 to-red-500 rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 text-white relative overflow-hidden">
+                    {/* Badge NEW */}
+                    <div className="absolute top-4 right-4 px-3 py-1 bg-yellow-400 text-yellow-900 text-xs font-bold rounded-full animate-pulse">
+                      NOUVEAU
+                    </div>
+
+                    {/* Icon */}
+                    <motion.div
+                      animate={{ rotate: [0, 5, -5, 0] }}
+                      transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+                      className="text-6xl mb-4"
+                    >
+                      🎬
+                    </motion.div>
+
+                    <h3 className="text-2xl font-bold mb-3">Mode Histoire</h3>
+                    <p className="text-white/90 mb-4">
+                      Vivez une aventure interactive "La Résistance Numérique" avec des personnages, des dialogues et une cinématique !
+                    </p>
+
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      <span className="px-3 py-1 bg-white/20 rounded-full text-sm">🎭 Narratif</span>
+                      <span className="px-3 py-1 bg-white/20 rounded-full text-sm">🎨 Immersif</span>
+                      <span className="px-3 py-1 bg-white/20 rounded-full text-sm">⏱️ 10 min</span>
+                    </div>
+
+                    <div className="flex items-center justify-center gap-2 font-semibold">
+                      <span>Commencer l'aventure</span>
+                      <ArrowRight className="w-5 h-5" />
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+
+              {/* Classic Mode */}
+              <motion.div
+                whileHover={{ y: -8, scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Link href="/questionnaire" className="block">
+                  <div className="bg-gradient-to-br from-blue-600 to-green-600 rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 text-white">
+                    {/* Icon */}
+                    <motion.div
+                      animate={{ scale: [1, 1.1, 1] }}
+                      transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+                      className="text-6xl mb-4"
+                    >
+                      📊
+                    </motion.div>
+
+                    <h3 className="text-2xl font-bold mb-3">Mode Classique</h3>
+                    <p className="text-white/90 mb-4">
+                      Évaluation rapide et directe avec un questionnaire de 5 questions pour calculer vos économies.
+                    </p>
+
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      <span className="px-3 py-1 bg-white/20 rounded-full text-sm">⚡ Rapide</span>
+                      <span className="px-3 py-1 bg-white/20 rounded-full text-sm">📈 Direct</span>
+                      <span className="px-3 py-1 bg-white/20 rounded-full text-sm">⏱️ 5 min</span>
+                    </div>
+
+                    <div className="flex items-center justify-center gap-2 font-semibold">
+                      <span>Démarrer l'évaluation</span>
+                      <ArrowRight className="w-5 h-5" />
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            </div>
           </motion.div>
 
           {/* Informations supplémentaires */}
