@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useTypingEffect } from '@/hooks/useTypingEffect';
+import { useSpeech } from '@/hooks/useSpeech';
 import { useState, useEffect } from 'react';
 
 export interface Character {
@@ -59,11 +60,21 @@ export default function CharacterDialogue({
 }: CharacterDialogueProps) {
   const [showText, setShowText] = useState(false);
   const { displayedText } = useTypingEffect(dialogue, 30, showText && enableTyping);
+  const { speak, speaking } = useSpeech();
 
   useEffect(() => {
     const timer = setTimeout(() => setShowText(true), 600);
     return () => clearTimeout(timer);
   }, []);
+
+  // Trigger speech synthesis after component appears
+  useEffect(() => {
+    const speakTimer = setTimeout(() => {
+      speak(dialogue);
+    }, 500);
+
+    return () => clearTimeout(speakTimer);
+  }, [dialogue, speak]);
 
   const positionClasses = {
     left: 'justify-start',
@@ -91,14 +102,16 @@ export default function CharacterDialogue({
         className="relative flex-shrink-0"
       >
         <motion.div
-          animate={{
-            scale: [1, 1.05, 1],
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            repeatType: 'loop',
-          }}
+          animate={
+            speaking
+              ? { scale: [1, 1.1, 1] }
+              : { scale: [1, 1.05, 1] }
+          }
+          transition={
+            speaking
+              ? { duration: 1, repeat: Infinity, repeatType: 'loop' }
+              : { duration: 2, repeat: Infinity, repeatType: 'loop' }
+          }
           className={`w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-gradient-to-br ${character.color} rounded-full flex items-center justify-center text-2xl md:text-3xl lg:text-4xl shadow-lg`}
         >
           {character.emoji}
@@ -168,6 +181,33 @@ export default function CharacterDialogue({
             }`}
           />
         </motion.div>
+
+        {/* Speaking indicator */}
+        {speaking && (
+          <motion.div
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            className="flex items-center gap-1 mt-2"
+          >
+            {[0, 1, 2].map((i) => (
+              <motion.div
+                key={i}
+                animate={{
+                  scale: [1, 1.3, 1],
+                  opacity: [0.5, 1, 0.5],
+                }}
+                transition={{
+                  duration: 1,
+                  repeat: Infinity,
+                  delay: i * 0.2,
+                }}
+                className="w-2 h-2 bg-blue-500 rounded-full"
+              />
+            ))}
+            <span className="text-xs text-blue-500 ml-1">En lecture...</span>
+          </motion.div>
+        )}
       </motion.div>
     </motion.div>
   );

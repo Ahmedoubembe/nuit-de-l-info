@@ -8,6 +8,8 @@ import CharacterDialogue, { characters } from '@/components/CharacterDialogue';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import Confetti from '@/components/Confetti';
 import { useSound } from '@/hooks/useSound';
+import VoiceControl from '@/components/VoiceControl';
+import VoiceInfoBanner from '@/components/VoiceInfoBanner';
 
 type QuestionnaireData = {
   nbPCs: number;
@@ -80,6 +82,12 @@ export default function StoryMode() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      {/* Voice Control Button */}
+      <VoiceControl />
+
+      {/* Info Banner */}
+      <VoiceInfoBanner />
+
       <div className="container mx-auto px-4 py-8">
         {/* Progress bar */}
         <div className="mb-8">
