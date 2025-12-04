@@ -1,27 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
+  --background: #FFFBEB;
   --foreground: #171717;
   --primary: #2563eb;
   --primary-dark: #1e40af;
   --secondary: #10b981;
-  --accent: #f59e0b;
+  --accent: #FBBF24;
+  --roman-red: #EF4444;
+  --parchment: #FEF3C7;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #1a1410;
     --foreground: #ededed;
+    --parchment: #2d2418;
   }
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Poppins', 'Inter', sans-serif;
 }
 
 @layer utilities {
@@ -46,7 +51,7 @@ body {
   animation: fadeIn 0.6s ease-out;
 }
 
-/* Gradient backgrounds */
+/* Gradient backgrounds - Thème Astérix */
 .gradient-primary {
   background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
 }
@@ -57,4 +62,63 @@ body {
 
 .gradient-warning {
   background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+.gradient-gaulois {
+  background: linear-gradient(135deg, #2563eb 0%, #10b981 100%);
+}
+
+.gradient-menhir {
+  background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%);
+}
+
+/* Bordure parchemin */
+.border-parchment {
+  border: 3px solid #D97706;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), inset 0 2px 4px rgba(249, 115, 22, 0.1);
+  background: linear-gradient(to bottom, #FEF3C7 0%, #FDE68A 100%);
+}
+
+/* Bouton bouclier */
+.btn-shield {
+  position: relative;
+  border-radius: 50% 50% 45% 45%;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+  border: 3px solid #1e3a8a;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2), inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.btn-shield:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Motifs celtiques */
+.celtic-pattern {
+  background-image:
+    repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(251, 191, 36, 0.1) 10px, rgba(251, 191, 36, 0.1) 20px),
+    repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(37, 99, 235, 0.1) 10px, rgba(37, 99, 235, 0.1) 20px);
+}
+
+/* Animation étoile Par Toutatis */
+@keyframes toutatis-stars {
+  0% {
+    transform: scale(0) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.5) rotate(180deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.toutatis-star {
+  animation: toutatis-stars 1s ease-out forwards;
 }

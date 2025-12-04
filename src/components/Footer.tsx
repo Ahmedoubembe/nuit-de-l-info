@@ -2,17 +2,18 @@
 
 import Link from 'next/link';
 import { Github, Twitter, Linkedin, Mail, Heart } from 'lucide-react';
+import { MenhirIcon, ShieldIcon } from './AsterixIcons';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   const footerLinks = {
     navigation: [
-      { label: 'Accueil', href: '/' },
-      { label: 'Calculatrice', href: '/questionnaire' },
-      { label: 'Écoles', href: '/ecoles' },
-      { label: 'Ressources', href: '/ressources' },
-      { label: 'À propos', href: '/a-propos' },
+      { label: 'Le Village', href: '/', icon: '🏘️' },
+      { label: 'La Potion Magique', href: '/questionnaire', icon: '🧪' },
+      { label: 'La Carte des Tribus', href: '/ecoles', icon: '🗺️' },
+      { label: 'Le Druide', href: '/ressources', icon: '🧙' },
+      { label: 'Les Guerriers', href: '/a-propos', icon: '⚔️' },
     ],
     social: [
       { label: 'GitHub', href: 'https://github.com/nird', icon: Github },
@@ -23,53 +24,61 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 mt-20">
+    <footer className="bg-parchment-100 dark:bg-gray-900 border-t-4 border-menhir-yellow mt-20 celtic-pattern relative">
+      {/* Motif décoratif en haut */}
+      <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-gaulois-blue via-menhir-yellow to-forest-green" />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Logo & Description */}
+          {/* Logo & Description - Style Astérix */}
           <div className="md:col-span-2">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-green-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">
-                N
+            <div className="flex items-center gap-3 mb-4">
+              <MenhirIcon className="w-12 h-12" />
+              <div>
+                <span className="text-2xl font-comic font-bold text-gaulois-blue block leading-tight">NIRD</span>
+                <span className="text-xs text-gray-600 dark:text-gray-400 font-body">La Résistance Numérique</span>
               </div>
-              <span className="text-xl font-bold text-gray-900 dark:text-white">NIRD</span>
             </div>
-            <p className="text-gray-600 dark:text-gray-400 mb-4 max-w-md">
-              Numérique Inclusif, Responsable et Durable. Accompagnement des écoles et
-              établissements vers la souveraineté numérique avec des solutions libres.
+            <p className="text-gray-700 dark:text-gray-400 mb-4 max-w-md font-body">
+              <span className="font-semibold text-gaulois-blue">Numérique Inclusif, Responsable et Durable.</span>
+              {' '}Comme un village gaulois, nous résistons à l'empire Big Tech et accompagnons les écoles vers la souveraineté numérique !
             </p>
             <a
               href="https://nird.forge.apps.education.fr"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
+              className="inline-flex items-center gap-2 text-gaulois-blue hover:text-menhir-yellow font-body font-semibold transition-colors group"
             >
-              nird.forge.apps.education.fr →
+              <ShieldIcon className="w-5 h-5 group-hover:animate-wiggle" />
+              <span>nird.forge.apps.education.fr →</span>
             </a>
           </div>
 
-          {/* Navigation Links */}
+          {/* Navigation Links - Style gaulois */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-4">
+            <h3 className="text-sm font-comic font-bold text-gaulois-blue uppercase tracking-wider mb-4 flex items-center gap-2">
+              <span>🗺️</span>
               Navigation
             </h3>
-            <ul className="space-y-2">
+            <ul className="space-y-3">
               {footerLinks.navigation.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                    className="flex items-center gap-2 text-gray-700 dark:text-gray-400 hover:text-menhir-yellow dark:hover:text-menhir-yellow transition-colors font-body group"
                   >
-                    {link.label}
+                    <span className="group-hover:scale-125 transition-transform">{link.icon}</span>
+                    <span>{link.label}</span>
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Social Links */}
+          {/* Social Links - Style gaulois */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-4">
+            <h3 className="text-sm font-comic font-bold text-gaulois-blue uppercase tracking-wider mb-4 flex items-center gap-2">
+              <span>📯</span>
               Suivez-nous
             </h3>
             <div className="flex flex-col gap-3">
@@ -81,9 +90,9 @@ export default function Footer() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                    className="flex items-center gap-2 text-gray-700 dark:text-gray-400 hover:text-menhir-yellow dark:hover:text-menhir-yellow transition-colors font-body group"
                   >
-                    <Icon className="w-5 h-5" />
+                    <Icon className="w-5 h-5 group-hover:scale-110 transition-transform" />
                     <span>{social.label}</span>
                   </a>
                 );
@@ -92,31 +101,38 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800">
+        {/* Bottom Bar - Style parchemin */}
+        <div className="mt-12 pt-8 border-t-2 border-menhir-yellow/30">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-gray-600 dark:text-gray-400 text-center md:text-left">
-              © {currentYear} NIRD. Tous droits réservés. Licence libre{' '}
+            <p className="text-sm text-gray-700 dark:text-gray-400 text-center md:text-left font-body">
+              © {currentYear} NIRD - Village Numérique Irréductible. Licence libre{' '}
               <a
                 href="https://www.gnu.org/licenses/agpl-3.0.html"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-600 hover:underline"
+                className="text-gaulois-blue hover:text-menhir-yellow font-semibold transition-colors"
               >
                 AGPL-3.0
               </a>
             </p>
-            <p className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-1">
-              Projet pour la{' '}
+            <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-400 font-body">
+              <span>Projet pour la</span>
               <a
                 href="https://www.nuitdelinfo.com/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-600 hover:underline font-medium"
+                className="text-gaulois-blue hover:text-menhir-yellow font-semibold transition-colors"
               >
                 Nuit de l'Info {currentYear}
               </a>
-              <Heart className="w-4 h-4 text-red-500 inline" />
+              <Heart className="w-4 h-4 text-roman-red inline animate-pulse" />
+            </div>
+          </div>
+
+          {/* Citation Astérix */}
+          <div className="mt-6 text-center">
+            <p className="text-xs text-gray-600 dark:text-gray-500 font-body italic">
+              "Par Toutatis ! La résistance numérique ne fait que commencer !" 🛡️
             </p>
           </div>
         </div>
