@@ -4,12 +4,16 @@ import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { VillageIcon, PotionIcon, ShieldIcon, MenhirIcon } from './AsterixIcons';
+import { AnimatedBackground } from './animations';
 
 export default function Hero() {
   return (
     <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-parchment-50 via-parchment-100 to-forest-green/10 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 px-4 relative overflow-hidden">
       {/* Motifs décoratifs de fond */}
       <div className="absolute inset-0 opacity-5 celtic-pattern pointer-events-none" />
+
+      {/* Background animé avec particules */}
+      <AnimatedBackground variant="particles" particleCount={15} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 relative z-10">
         <motion.div

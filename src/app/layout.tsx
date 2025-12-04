@@ -3,6 +3,7 @@ import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import AsterixEasterEggs from '@/components/AsterixEasterEggs'
+import { ScrollProgressBar } from '@/components/animations'
 
 export const metadata: Metadata = {
   title: 'NIRD - Le Village Numérique Irréductible',
@@ -17,6 +18,7 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body>
+        <ScrollProgressBar />
         <Header />
         <main className="min-h-screen">
           {children}
