@@ -176,7 +176,7 @@ export default function Hero() {
               <span>🗡️</span>
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {/* Story Mode - Thème Aventure */}
               <motion.div
                 whileHover={{ y: -10, scale: 1.03, rotate: -1 }}
@@ -269,6 +269,57 @@ export default function Hero() {
                       whileHover={{ scale: 1.05 }}
                     >
                       <span>Boire la Potion !</span>
+                      <ArrowRight className="w-6 h-6" />
+                    </motion.div>
+                  </div>
+                </Link>
+              </motion.div>
+
+              {/* Games Mode - Thème Jeux */}
+              <motion.div
+                whileHover={{ y: -10, scale: 1.03, rotate: -1 }}
+                whileTap={{ scale: 0.98 }}
+                className="relative"
+              >
+                <Link href="/jeux" className="block">
+                  <div className="bg-gradient-to-br from-orange-600 via-amber-600 to-yellow-600 rounded-3xl p-8 md:p-10 shadow-2xl hover:shadow-3xl transition-all duration-300 text-white relative overflow-hidden border-4 border-menhir-yellow">
+                    {/* Badge avec animation */}
+                    <motion.div
+                      animate={{ scale: [1, 1.1, 1], rotate: [0, 5, -5, 0] }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                      className="absolute top-4 right-4 px-4 py-2 bg-red-600 text-white text-sm font-comic font-bold rounded-full shadow-lg"
+                    >
+                      4 JEUX !
+                    </motion.div>
+
+                    {/* Icon avec animation */}
+                    <motion.div
+                      animate={{
+                        rotate: [0, -10, 10, -10, 0],
+                        scale: [1, 1.1, 1]
+                      }}
+                      transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 2 }}
+                      className="text-7xl mb-4"
+                    >
+                      🎮
+                    </motion.div>
+
+                    <h3 className="text-3xl font-comic font-bold mb-4 drop-shadow-lg">Les Jeux du Village</h3>
+                    <p className="text-white/95 mb-6 font-body text-lg">
+                      Apprends en t&apos;amusant ! 4 mini-jeux + 1 RPG complet pour devenir un expert du logiciel libre.
+                    </p>
+
+                    <div className="flex flex-wrap gap-2 mb-6">
+                      <span className="px-4 py-2 bg-white/25 backdrop-blur-sm rounded-full text-sm font-body font-semibold">🎯 Mini-jeux</span>
+                      <span className="px-4 py-2 bg-white/25 backdrop-blur-sm rounded-full text-sm font-body font-semibold">⚔️ RPG</span>
+                      <span className="px-4 py-2 bg-white/25 backdrop-blur-sm rounded-full text-sm font-body font-semibold">🏆 Succès</span>
+                    </div>
+
+                    <motion.div
+                      className="flex items-center justify-center gap-3 font-comic text-xl font-bold bg-white/20 backdrop-blur-sm py-4 rounded-2xl"
+                      whileHover={{ scale: 1.05 }}
+                    >
+                      <span>Jouer Maintenant !</span>
                       <ArrowRight className="w-6 h-6" />
                     </motion.div>
                   </div>
