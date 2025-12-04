@@ -49,26 +49,26 @@ export default function SocialShare({ data, results }: SocialShareProps) {
       <div className="flex flex-wrap gap-4">
         {/* Twitter/X Share */}
         <TwitterShareButton url={shareUrl} title={twitterMessage}>
-          <motion.button
+          <motion.div
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-black hover:bg-gray-800 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-black hover:bg-gray-800 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all cursor-pointer"
           >
             <Twitter className="w-5 h-5" />
             Partager sur X
-          </motion.button>
+          </motion.div>
         </TwitterShareButton>
 
         {/* LinkedIn Share */}
         <LinkedinShareButton url={shareUrl} title="Migration Linux avec NIRD" summary={linkedinMessage}>
-          <motion.button
+          <motion.div
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-[#0077B5] hover:bg-[#006399] text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-[#0077B5] hover:bg-[#006399] text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all cursor-pointer"
           >
             <Linkedin className="w-5 h-5" />
             Partager sur LinkedIn
-          </motion.button>
+          </motion.div>
         </LinkedinShareButton>
 
         {/* Copy Link */}
